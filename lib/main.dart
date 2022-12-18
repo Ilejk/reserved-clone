@@ -16,6 +16,7 @@ import 'package:reserved/screens/more_screen_screens/privacy_policy_screen.dart'
 import 'package:reserved/screens/more_screen_screens/regulation_screen.dart';
 import 'package:reserved/screens/orders_screen.dart';
 import 'package:reserved/screens/product_detail_screen.dart';
+import 'widgets/cart_item.dart';
 
 void main() => runApp(const MyApp());
 
