@@ -1,248 +1,207 @@
 import 'package:reserved/providers/product.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class ProductsProvider with ChangeNotifier {
-  final List<Product> _items = [
-    Product(
-      id: 'p1',
-      title: 'Double-breasted coat',
-      description:
-          'Double-breasted coat with a classic cut, made of fabric with wool.',
-      price: 129.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/9/2/9280N-99X-002-1-571385.jpg',
-      isCoat: true,
-      isMan: true,
-    ),
-    Product(
-      id: 'p2',
-      title: 'Wool coat',
-      description: 'Classic straight cut coat sewn from fabric with wool',
-      price: 89.98,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/9/0/9060N-90P-001-1-571731_3.jpg',
-      isCoat: true,
-      isMan: true,
-    ),
-    Product(
-      id: 'p3',
-      title: 'Single-breasted coat with a blend of wool',
-      description:
-          'Single-breasted coat with a classic cut, made of fabric with a blend of wool.',
-      price: 77.56,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/6/0691O-89M-004-1-549103_11.jpg',
-      isCoat: true,
-      isMan: true,
-    ),
-    Product(
-      id: 'p4',
-      title: 'Hooded jacket',
-      description: 'Jacket with a regular cut, made of smooth fabric.',
-      price: 59.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/5/0559O-99X-001-1-570319_7.jpg',
-      isJacket: true,
-      isMan: true,
-    ),
-    Product(
-      id: 'p5',
-      title: 'Jacket with recycled filling',
-      description:
-          'Jacket with a casual cut, made of quilted fabric with recycled filling.',
-      price: 99.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/9/9/9906N-99X-002-1-564173_10.jpg',
-      isMan: true,
-      isJacket: true,
-    ),
-    Product(
-      id: 'p6',
-      title: 'Quilted coat',
-      description: 'Coat with a simple cut, sewn from quilted fabric.',
-      price: 129.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/0/1063O-87X-001-1-576589_7.jpg',
-      isMan: true,
-      isCoat: true,
-    ),
-    Product(
-      id: 'p7',
-      title: 'Wool turtleneck',
-      description: 'Turtleneck with a regular cut, made of yarn with wool.',
-      price: 39.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/2/1233O-33X-001-1-573581_3.jpg',
-      isMan: true,
-      isSweater: true,
-    ),
-    Product(
-      id: 'p8',
-      title: 'Patterned turtleneck',
-      description: 'Golf o prostym kroju, wykonany z dzianiny z bawełną.',
-      price: 49.59,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/9/6/9618N-59P-002-1-568377_10.jpg',
-      isMan: true,
-      isSweater: true,
-    ),
-    Product(
-      id: 'p9',
-      title: 'Sweater with a stand-up collar',
-      description: 'Sweater with a casual cut, made of cotton knit fabric.',
-      price: 89.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/4/6/4602L-59P-002-1-575253_1.jpg',
-      isMan: true,
-      isSweater: true,
-    ),
-    Product(
-      id: 'p10',
-      title: 'Checked chino slim fit pants',
-      description: 'Chino pants, made of checkered fabric.',
-      price: 69.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/8/6/8625N-59P-001-1-552143_5.jpg',
-      isMan: true,
-      isSuit: true,
-    ),
-    Product(
-      id: 'p11',
-      title: 'Checked slim fit jacket',
-      description: 'Jacket with a fitted cut, made of checkered fabric.',
-      price: 139.59,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/8/0819O-59P-003-1-552103_7.jpg',
-      isMan: true,
-      isSuit: true,
-    ),
-    Product(
-      id: 'p12',
-      title: 'Slim fit jacket',
-      description:
-          'Jacket with a tailored cut sewn from a pleasant to the touch, structured fabric.',
-      price: 159.96,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/8/0812O-57M-001-1-552101_4.jpg',
-      isMan: true,
-      isSuit: true,
-    ),
-    Product(
-      id: 'p13',
-      title: 'Slim fit pants',
-      description: 'Pants with a tailored cut, made of fabric with viscose.',
-      price: 69.69,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/1/1105O-57M-001-1-552117.jpg',
-      isMan: true,
-      isSuit: true,
-    ),
-    Product(
-      id: 'p14',
-      title: 'Egyptian cotton shirt',
-      description:
-          'A shirt with a fitted cut, sewn from Egyptian cotton with added elastic fibers.',
-      price: 57.77,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/2/0221O-00X-001-1-558841_5.jpg',
-      isMan: true,
-      isShirt: true,
-    ),
-    Product(
-      id: 'p15',
-      title: 'Egyptian cotton shirt',
-      description:
-          'A shirt with a fitted cut, sewn from Egyptian cotton with added elastic fibers.',
-      price: 67.77,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/2/0221O-99X-001-1-558775_1.jpg',
-      isMan: true,
-      isShirt: true,
-    ),
-    Product(
-      id: 'p16',
-      title: 'Regular fit shirt',
-      description: 'Shirt with a regular cut, made of cotton fabric.',
-      price: 39.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/2/0220O-87X-004-1-568043_2.jpg',
-      isMan: true,
-      isShirt: true,
-    ),
-    Product(
-      id: 'p17',
-      title: 'Printed regular T-shirt',
-      description:
-          'T-shirt with regular cut, made of thicker cotton knit fabric.',
-      price: 19.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/5/6/5606L-99X-010-1-577009_3.jpg',
-      isMan: true,
-      isTShirt: true,
-    ),
-    Product(
-      id: 'p18',
-      title: 'Printed regular T-shirt',
-      description:
-          'T-shirt with regular cut, made of thicker cotton knit fabric.',
-      price: 19.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/2/1254O-99X-010-1-565895_8.jpg',
-      isMan: true,
-      isTShirt: true,
-    ),
-    Product(
-      id: 'p19',
-      title: 'Printed regular T-shirt',
-      description:
-          'T-shirt with regular cut, made of thicker cotton knit fabric.',
-      price: 19.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/8/9/8911N-99X-001-1-568335_5.jpg',
-      isMan: true,
-      isTShirt: true,
-    ),
-    Product(
-      id: 'p20',
-      title: 'Hooded sweatshirt with a zip-up hood',
-      description: 'Sweatshirt with a casual cut, made of fabric with viscose.',
-      price: 89.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/0/0072O-99X-001-1-569351_3.jpg',
-      isMan: true,
-      isHoodie: true,
-    ),
-    Product(
-      id: 'p21',
-      title: 'Hooded sweatshirt with a zip-up hood',
-      description: 'Sweatshirt with a casual cut, made of fabric with viscose.',
-      price: 89.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/0/0072O-88X-004-1-568061_1.jpg',
-      isMan: true,
-      isHoodie: true,
-    ),
-    Product(
-      id: 'p22',
-      title: 'Corduroy chino pants',
-      description: 'Pants with a tailored cut, made of corduroy cotton fabric.',
-      price: 129.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/3/1/3135L-99X-001-1-572905_4.jpg',
-      isMan: true,
-      isPants: true,
-    ),
-    Product(
-      id: 'p23',
-      title: 'Corduroy chino pants',
-      description: 'Pants with a tailored cut, made of corduroy cotton fabric.',
-      price: 129.99,
-      imageUrl:
-          'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/3/1/3135L-85X-001-1-571359_5.jpg',
-      isMan: true,
-      isPants: true,
-    ),
+  List<Product> _items = [
+    // Product(
+    //   id: 'p4',
+    //   title: 'Hooded jacket',
+    //   description: 'Jacket with a regular cut, made of smooth fabric.',
+    //   price: 59.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/5/0559O-99X-001-1-570319_7.jpg',
+    //   isJacket: true,
+    //   isMan: true,
+    // ),
+    // Product(
+    //   id: 'p5',
+    //   title: 'Jacket with recycled filling',
+    //   description:
+    //       'Jacket with a casual cut, made of quilted fabric with recycled filling.',
+    //   price: 99.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/9/9/9906N-99X-002-1-564173_10.jpg',
+    //   isMan: true,
+    //   isJacket: true,
+    // ),
+    // Product(
+    //   id: 'p6',
+    //   title: 'Quilted coat',
+    //   description: 'Coat with a simple cut, sewn from quilted fabric.',
+    //   price: 129.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/0/1063O-87X-001-1-576589_7.jpg',
+    //   isMan: true,
+    //   isCoat: true,
+    // ),
+    // Product(
+    //   id: 'p7',
+    //   title: 'Wool turtleneck',
+    //   description: 'Turtleneck with a regular cut, made of yarn with wool.',
+    //   price: 39.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/2/1233O-33X-001-1-573581_3.jpg',
+    //   isMan: true,
+    //   isSweater: true,
+    // ),
+    // Product(
+    //   id: 'p8',
+    //   title: 'Patterned turtleneck',
+    //   description: 'Golf o prostym kroju, wykonany z dzianiny z bawełną.',
+    //   price: 49.59,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/9/6/9618N-59P-002-1-568377_10.jpg',
+    //   isMan: true,
+    //   isSweater: true,
+    // ),
+    // Product(
+    //   id: 'p9',
+    //   title: 'Sweater with a stand-up collar',
+    //   description: 'Sweater with a casual cut, made of cotton knit fabric.',
+    //   price: 89.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/4/6/4602L-59P-002-1-575253_1.jpg',
+    //   isMan: true,
+    //   isSweater: true,
+    // ),
+    // Product(
+    //   id: 'p10',
+    //   title: 'Checked chino slim fit pants',
+    //   description: 'Chino pants, made of checkered fabric.',
+    //   price: 69.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/8/6/8625N-59P-001-1-552143_5.jpg',
+    //   isMan: true,
+    //   isSuit: true,
+    // ),
+    // Product(
+    //   id: 'p11',
+    //   title: 'Checked slim fit jacket',
+    //   description: 'Jacket with a fitted cut, made of checkered fabric.',
+    //   price: 139.59,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/8/0819O-59P-003-1-552103_7.jpg',
+    //   isMan: true,
+    //   isSuit: true,
+    // ),
+    // Product(
+    //   id: 'p12',
+    //   title: 'Slim fit jacket',
+    //   description:
+    //       'Jacket with a tailored cut sewn from a pleasant to the touch, structured fabric.',
+    //   price: 159.96,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/8/0812O-57M-001-1-552101_4.jpg',
+    //   isMan: true,
+    //   isSuit: true,
+    // ),
+    // Product(
+    //   id: 'p13',
+    //   title: 'Slim fit pants',
+    //   description: 'Pants with a tailored cut, made of fabric with viscose.',
+    //   price: 69.69,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/1/1105O-57M-001-1-552117.jpg',
+    //   isMan: true,
+    //   isSuit: true,
+    // ),
+    // Product(
+    //   id: 'p14',
+    //   title: 'Egyptian cotton shirt',
+    //   description:
+    //       'A shirt with a fitted cut, sewn from Egyptian cotton with added elastic fibers.',
+    //   price: 57.77,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/2/0221O-00X-001-1-558841_5.jpg',
+    //   isMan: true,
+    //   isShirt: true,
+    // ),
+    // Product(
+    //   id: 'p15',
+    //   title: 'Egyptian cotton shirt',
+    //   description:
+    //       'A shirt with a fitted cut, sewn from Egyptian cotton with added elastic fibers.',
+    //   price: 67.77,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/2/0221O-99X-001-1-558775_1.jpg',
+    //   isMan: true,
+    //   isShirt: true,
+    // ),
+    // Product(
+    //   id: 'p16',
+    //   title: 'Regular fit shirt',
+    //   description: 'Shirt with a regular cut, made of cotton fabric.',
+    //   price: 39.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/2/0220O-87X-004-1-568043_2.jpg',
+    //   isMan: true,
+    //   isShirt: true,
+    // ),
+    // Product(
+    //   id: 'p17',
+    //   title: 'Printed regular T-shirt',
+    //   description:
+    //       'T-shirt with regular cut, made of thicker cotton knit fabric.',
+    //   price: 19.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/5/6/5606L-99X-010-1-577009_3.jpg',
+    //   isMan: true,
+    //   isTShirt: true,
+    // ),
+    // Product(
+    //   id: 'p18',
+    //   title: 'Printed regular T-shirt',
+    //   description:
+    //       'T-shirt with regular cut, made of thicker cotton knit fabric.',
+    //   price: 19.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/1/2/1254O-99X-010-1-565895_8.jpg',
+    //   isMan: true,
+    //   isTShirt: true,
+    // ),
+    // Product(
+    //   id: 'p19',
+    //   title: 'Printed regular T-shirt',
+    //   description:
+    //       'T-shirt with regular cut, made of thicker cotton knit fabric.',
+    //   price: 19.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/8/9/8911N-99X-001-1-568335_5.jpg',
+    //   isMan: true,
+    //   isTShirt: true,
+    // ),
+    // Product(
+    //   id: 'p20',
+    //   title: 'Hooded sweatshirt with a zip-up hood',
+    //   description: 'Sweatshirt with a casual cut, made of fabric with viscose.',
+    //   price: 89.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/0/0072O-99X-001-1-569351_3.jpg',
+    //   isMan: true,
+    //   isHoodie: true,
+    // ),
+    // Product(
+    //   id: 'p21',
+    //   title: 'Hooded sweatshirt with a zip-up hood',
+    //   description: 'Sweatshirt with a casual cut, made of fabric with viscose.',
+    //   price: 89.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/0/0/0072O-88X-004-1-568061_1.jpg',
+    //   isMan: true,
+    //   isHoodie: true,
+    // ),
+    // Product(
+    //   id: 'p22',
+    //   title: 'Corduroy chino pants',
+    //   description: 'Pants with a tailored cut, made of corduroy cotton fabric.',
+    //   price: 129.99,
+    //   imageUrl:
+    //       'https://static.reserved.com/media/catalog/product/cache/1200/a4e40ebdc3e371adff845072e1c73f37/3/1/3135L-99X-001-1-572905_4.jpg',
+    //   isMan: true,
+    //   isPants: true,
+    // ),
   ];
 
   List<Product> get items {
@@ -251,6 +210,36 @@ class ProductsProvider with ChangeNotifier {
 
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
+  }
+
+  Future<void> fetchAndSetProducts() async {
+    final url = Uri.parse(
+        'https://reserved-clone-f8119-default-rtdb.europe-west1.firebasedatabase.app/products.json');
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Product(
+            id: prodId,
+            title: prodData['title'],
+            description: prodData['description'],
+            price: prodData['price'],
+            imageUrl: prodData['imageUrl'],
+            isFavorite: prodData['isFavorite'],
+            isMan: prodData['isMan'],
+            isCoat: prodData['isCoat'],
+            isPants: prodData['isPants'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
   }
 
   List<Product> get favoriteItems {

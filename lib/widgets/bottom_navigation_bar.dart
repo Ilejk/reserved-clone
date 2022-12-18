@@ -61,13 +61,15 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
               myColor: _iconColor,
               onPressed: () {
                 // IF USER IS NOT LOGGED IN GO TO LOG IN SCREEN IF HE IS LOGGED IN GO TO THE FAVORITES SCREEN
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => ProductsOverviewScreen(
-                      category: products.favoriteItems,
+                setState(() {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => ProductsOverviewScreen(
+                        category: products.favoriteItems,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                });
               },
               myIcon: Icons.favorite_border_sharp),
           BottomNavigationBarIconButton(

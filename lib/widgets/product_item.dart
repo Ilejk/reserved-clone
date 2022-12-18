@@ -4,9 +4,14 @@ import 'package:reserved/providers/product.dart';
 import 'package:provider/provider.dart';
 import 'package:reserved/screens/product_detail_screen.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductItem extends StatefulWidget {
   const ProductItem({Key? key}) : super(key: key);
 
+  @override
+  State<ProductItem> createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context);
@@ -47,7 +52,9 @@ class ProductItem extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                product.toggleFavoriteScreen(product.id);
+                setState(() {
+                  product.toggleFavoriteScreen();
+                });
               },
               icon: Icon(
                 product.isFavorite

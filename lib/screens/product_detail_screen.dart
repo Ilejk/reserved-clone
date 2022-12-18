@@ -89,8 +89,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     IconButton(
                       onPressed: () {
                         setState(() {
-                          loadedProducts
-                              .toggleFavoriteScreen(loadedProducts.id);
+                          loadedProducts.toggleFavoriteScreen();
                         });
                       },
                       icon: Icon(
