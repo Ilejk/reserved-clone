@@ -28,6 +28,48 @@ class Orders with ChangeNotifier {
     return [..._order];
   }
 
+  Future<void> fetchAndSetProducts() async {
+    final timestamp = DateTime.now();
+    final url = Uri.parse(
+        'https://reserved-clone-f8119-default-rtdb.europe-west1.firebasedatabase.app/orders.json');
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+      final Map<String, dynamic>? extractedData = jsonDecode(response.body);
+      final List<OrderItem> loadedOrders = [];
+      if (extractedData == null) {
+        return;
+      }
+      extractedData.forEach((orderId, orderData) {
+        loadedOrders.add(
+          OrderItem(
+            dateTime: DateTime.parse(
+              orderData['dateTime'],
+            ),
+            id: orderId,
+            products: (orderData['products'] as List<dynamic>)
+                .map(
+                  (item) => CartItem(
+                    id: item['id'],
+                    title: item['title'],
+                    quantity: item['quantity'],
+                    price: item['price'],
+                    imageUrl: item['imageUrl'],
+                  ),
+                )
+                .toList(),
+            amount: orderData['amount'],
+            imageUrl: orderData['imageUrl'],
+          ),
+        );
+      });
+      _order = loadedOrders.reversed.toList();
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<void> addOrder(List<CartItem> cartProducts, double total,
       String imageUrl, String id) async {
     final timestamp = DateTime.now();
@@ -43,7 +85,8 @@ class Orders with ChangeNotifier {
                     'id': cp.id,
                     'title': cp.title,
                     'quantity': cp.quantity,
-                    'price': cp.price
+                    'price': cp.price,
+                    'imageUrl': cp.imageUrl,
                   })
               .toList(),
         }));

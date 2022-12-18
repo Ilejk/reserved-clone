@@ -13,6 +13,23 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  var _isInit = true;
+
+  @override
+  void initState() {
+    setState(() {});
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      Provider.of<Orders>(context, listen: false).fetchAndSetProducts();
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
