@@ -5,6 +5,7 @@ import 'package:reserved/screens/more_screen_screens/help_screen.dart';
 import 'package:reserved/screens/more_screen_screens/my_account_screen.dart';
 import 'package:reserved/screens/more_screen_screens/privacy_policy_screen.dart';
 import 'package:reserved/screens/more_screen_screens/regulation_screen.dart';
+import 'package:reserved/screens/orders_screen.dart';
 import 'package:reserved/widgets/bottom_navigation_bar.dart';
 import 'package:reserved/widgets/my_divider.dart';
 
@@ -61,6 +62,7 @@ class _MoreScreenState extends State<MoreScreen> {
             icon: Icons.history,
             onPressed: () {
               // CHECK IF USER IS SIGNED IN IF YES GO TO ORDER HISTORY IF NOT GO TO AUTH SCREEN
+              Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);
             },
             title: 'ORDER HISTORY',
           ),
