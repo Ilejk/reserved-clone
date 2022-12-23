@@ -1,6 +1,8 @@
-# reserved
+# reserved - clone
 
-A new Flutter project.
+Hi, 
+This is my take on reserved app.
+I'm still learning so some things aren't perfect but will be updating this app in the future for sure.
 
 ## Getting Started
 
